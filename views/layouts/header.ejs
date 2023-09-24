@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moments - Online Gift Shop</title>
+    <link href="/dist/output.css" rel="stylesheet">
+    <!--
+    - favicon
+  -->
+    <link rel="shortcut icon" href="/src/images/logo/favicon.ico" type="image/x-icon">
+
+    <!--
+    - custom css link
+  -->
+    <link rel="stylesheet" href="css/style-prefix.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!--
+    - google font link
+  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="/js/loader.js"></script>
+
+</head>
+
+
+<body>
+
+    <div class="loader-bg">
+        <div class="preloader">
+            <svg class="cart" role="img" aria-label="Shopping cart line animation" viewBox="0 0 128 128" width="128px"
+                height="128px" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="8">
+                    <g class="cart__track" stroke="hsla(0,10%,10%,0.1)">
+                        <polyline points="4,4 21,4 26,22 124,22 112,64 35,64 39,80 106,80" />
+                        <circle cx="43" cy="111" r="13" />
+                        <circle cx="102" cy="111" r="13" />
+                    </g>
+                    <g class="cart__lines" stroke="currentColor">
+                        <polyline class="cart__top" points="4,4 21,4 26,22 124,22 112,64 35,64 39,80 106,80"
+                            stroke-dasharray="338 338" stroke-dashoffset="-338" />
+                        <g class="cart__wheel1" transform="rotate(-90,43,111)">
+                            <circle class="cart__wheel-stroke" cx="43" cy="111" r="13" stroke-dasharray="81.68 81.68"
+                                stroke-dashoffset="81.68" />
+                        </g>
+                        <g class="cart__wheel2" transform="rotate(90,102,111)">
+                            <circle class="cart__wheel-stroke" cx="102" cy="111" r="13" stroke-dasharray="81.68 81.68"
+                                stroke-dashoffset="81.68" />
+                        </g>
+                    </g>
+                </g>
+            </svg>
+            <div class="preloader__text">
+                <p class="preloader__msg">Bringing you the goods…</p>
+                <p class="preloader__msg preloader__msg--last">This is taking long. Something’s wrong.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" data-overlay></div>
+
+    <div class="modal" data-modal>
+
+        <div class="modal-close-overlay" data-modal-overlay></div>
+
+        <div class="modal-content">
+            <button class="modal-close-btn" data-modal-close>
+                <ion-icon name="close-outline"></ion-icon>
+            </button>
+
+            <div class="form-container">
+
+                <!-- login start -->
+                <form id="otp-login-form">
+                    <h2>Login</h2>
+
+                    <div class="form-group">
+                        <!-- <label for="email1"></label> -->
+                        <input type="text" id="email1" placeholder="email or mobile" name="email" email-field required>
+                        <span class="invalid" data-email-error></span>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn ">Request otp</button>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" class="btn-black" onclick="showLoginForm()">Login</button>
+                    </div>
+
+                    <button class="links" onclick="showSignUpForm()">Create Account</button>
+                </form>
+
+                <!-- otp  -->
+                <form id="otp-form" class="otp-container">
+
+                    <div class="box-wrapper">
+                        <div class="head">
+                            Verify OTP
+                        </div>
+                        <div class="input-box">
+                            <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(1)'
+                                maxlength=1>
+                            <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(2)'
+                                maxlength=1>
+                            <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(3)'
+                                maxlength=1>
+                            <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(4)'
+                                maxlength=1>
+                        </div>
+                        <div id="resendBtn" class="countdown">Resend OTP</div>
+                        <div id="otp-error" class="invalid"></div>
+                        <div class="form-group">
+                            <button type="submit" class="btn-black">Verify</button>
+                        </div>
+                    </div>
+
+                </form>
+
+                <!-- signup  -->
+                <form id="signup-form">
+                    <h2>Sign Up</h2>
+
+                    <div class="form-group">
+                        <label for="email">Name:</label>
+                        <input type="text" id="username" name="username" required>
+                        <span class="invalid" id="name-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email2">Email:</label>
+                        <input type="email" id="email2" name="email" email-field required>
+                        <span class="invalid" email-error data-email-error></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mobile">Mobile:</label>
+                        <input type="mobile" id="mobile" name="mobile" required>
+                        <span class="invalid" mobile-error></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">password:</label>
+                        <input type="password" id="pass2" name="password" required>
+                        <span class="invalid" password-error data-password-error></span>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">confirm password:</label>
+                        <input type="password" id="confirmpass2" name="confirmpassword" required>
+                        <span class="invalid" confirm-password-error></span>
+
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn-black">Next</button>
+                    </div>
+
+                    <button class="links" onclick="showLoginForm()">Already have an account</button>
+                </form>
+
+                <!-- login  -->
+                <form id="login" method="POST">
+                    <h2>Log In</h2>
+
+                    <div class="form-group">
+                        <label for="email3">Email:</label>
+                        <input type="email" id="email3" name="email" email-field required>
+                        <span class="invalid" data-email-error></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">password:</label>
+                        <input type="password" id="pass1" name="password" required>
+                    </div>
+
+                    <div id="message-error" class="invalid"></div>
+
+                    <div class="form-group">
+                        <button class="btn-black" type="submit">Log In</button>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn" id="get-started" onclick="location.href = `/`" style="margin:10px 0px;"
+                            type="submit">Get Started</button>
+                    </div>
+
+                    <button class="links" onclick="showSignUpForm()">Create Account</button>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- message toast  -->
+
+    <!-- <button onclick="showToast()">Show Toast</button> -->
+
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <i class="fas fa-solid fa-check check"></i>
+
+            <div class="message">
+                <span class="text text-1"></span>
+                <span class="text text-2"></span>
+            </div>
+        </div>
+        <i class="fa-solid fa-xmark close" onclick="closeToast()"></i>
+
+        <div class="progress"></div>
+    </div>
+
+
+    <div class="mobiletoast" id="mobiletoast">
+        <div class="toast-content">
+            <!-- <i class="fas fa-solid fa-check check"></i> -->
+
+            <div class="message">
+                <span class="text text-1"></span>
+                <span class="text text-2"></span>
+            </div>
+        </div>
+        <i class="fa-solid fa-xmark close" onclick="closeToast()"></i>
+
+        <div class="progress"></div>
+    </div>
+
+
+    <script>
+        function showToast() {
+            const toast = document.getElementById("toast");
+            const mobileToast = document.getElementById("mobiletoast");
+            toast.classList.add("active");
+            mobileToast.classList.add("active")
+
+            setTimeout(() => {
+                closeToast();
+            }, 3000);
+        }
+
+        function closeToast() {
+            const toast = document.getElementById("toast");
+            const mobileToast = document.getElementById("mobiletoast");
+
+            toast.classList.remove("active")
+            mobileToast.classList.remove("active")
+
+        }
+
+        // Optional: Customize the toast message
+        function setToastMessage(text1, text2) {
+            const toastText1 = document.querySelectorAll(".text.text-1");
+            const toastText2 = document.querySelectorAll(".text.text-2");
+
+            toastText1.forEach((text1Span) => {
+                text1Span.textContent = text1;
+            });
+
+            toastText2.forEach((text2Span) => {
+                text2Span.textContent = text2;
+            });
+        }
+
+
+        // showToast();
+    </script>
+
+
+    <!--
+    - HEADER
+  -->
+
+    <header>
+
+        <div class="header d-flex align-items-center  justify-content-center">
+
+            <div class="container justify-center align  ">
+
+                <ul class="header-social-container">
+                    <!-- Social media links  -->
+                </ul>
+
+                <div class=" w-full text-white d-flex justify-content-center">
+                    <p class="headerTop">
+                        Flat 10% Discount - Use Coupon Code RAKHI10
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="header-main">
+
+            <div class="container">
+
+                <a href="/" class="header-logo ">
+                    <img class="logoImage" src="src/images/logo/logo.png" alt="Moment's logo" width="120" height="45">
+                    <div class="Moment_Writing ">Moments</div>
+                </a>
+
+
+                <div class="header-search-container">
+
+                    <input type="search" id="search-input" name="search" class="search-field"
+                        placeholder="Enter your product name...">
+
+                    <button class="search-btn">
+                        <ion-icon name="search-outline"></ion-icon>
+                    </button>
+                    <div id="suggestions"></div>
+
+                </div>
+
+                <div class="header-user-actions">
+
+                    <% if (locals.user && locals.user.role==='user' ) { %>
+
+                        <button class="action-btn" data-menu-user-action>
+                            <img class="mobile-user-avatar" src="<%= locals.user.avatar.replace('public/', '') %>"
+                                alt="testimonial">
+                        </button>
+
+                        <div class="profile-dropDown close" profile-dropDown>
+                            <ul>
+                                <li><small>
+                                        <%=locals.user.username%>
+
+                                    </small></li>
+                                <li> <a href="/me">Profile</a></li>
+                                <li> <a href="" class="logout">Logout</a></li>
+                            </ul>
+                        </div>
+
+
+                        <% } else if (locals.user && locals.user.role==='guest' ) { %>
+                            <button class="action-btn" data-user-action>
+                                <ion-icon name="person-outline"></ion-icon>
+                            </button>
+                            <% } %>
+
+                                <button onclick="location.assign('/wishlist')" class="action-btn">
+                                    <ion-icon name="heart-outline"></ion-icon>
+                                    <span class="count" style="display: none;" id="wishlist_count"></span>
+                                </button>
+
+                                <button onclick="location.assign('/cart')" class="action-btn">
+                                    <ion-icon name="bag-handle-outline"></ion-icon>
+                                    <span class="count" id="cart_count"></span>
+                                </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <nav class="desktop-navigation-menu">
+
+            <div class="container">
+
+                <ul class="desktop-menu-category-list">
+
+                    <li class="menu-category">
+                        <a href="/" class="menu-title">Home</a>
+                    </li>
+
+                    <li class="menu-category">
+                        <a href="#" class="menu-title">Categories</a>
+
+                        <div class="dropdown-panel">
+
+                        </div>
+                    </li>
+
+                    <li li class="menu-category">
+                        <a href="/shop" class="menu-title">Shops</a>
+                    </li>
+
+                    <li li class="menu-category">
+                        <a href="/myorders" class="menu-title">Orders</a>
+                    </li>
+
+                    <li class="menu-category">
+                        <a href="/hot" class="menu-title">Hot Offers</a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </nav>
+
+        <div class="mobile-bottom-navigation">
+
+            <button class="action-btn" data-mobile-menu-open-btn>
+                <ion-icon name="menu-outline"></ion-icon>
+            </button>
+
+            <button onclick="location.assign('/cart')" class="action-btn">
+                <ion-icon name="bag-handle-outline"></ion-icon>
+                <span class="count" id="cart_count_mobile">0</span>
+            </button>
+
+            <button onclick="location.assign('/')" class="action-btn">
+                <ion-icon name="home-outline"></ion-icon>
+            </button>
+
+            <button onclick="location.assign('/wishlist')" class="action-btn">
+                <ion-icon name="heart-outline"></ion-icon>
+
+                <span class="count" style="display: none;" id="wishlist_count_mobile">0</span>
+            </button>
+
+            <% if (locals.user && locals.user.role==='user' ) { %>
+                <button class="action-btn" data-mobile-user-action>
+                    <img class="mobile-user-avatar" src="<%= locals.user.avatar.replace('public/', '') %>"
+                        alt="testimonial">
+                </button>
+
+                <div class="mobile-profile-dropDown close">
+                    <ul>
+                        <li><small>
+                                <%=locals.user.username%>
+
+                            </small></li>
+                        <li> <a href="/me">Profile</a></li>
+                        <li> <a href="" class="logout">Logout</a></li>
+                    </ul>
+                </div>
+                <% } else if (locals.user && locals.user.role==='guest' ) { %>
+                    <button class="action-btn" data-mobile-user-action>
+                        <ion-icon name="person-outline"></ion-icon>
+                    </button>
+                    <% } %>
+        </div>
+
+        <nav class="mobile-navigation-menu  has-scrollbar" data-mobile-menu>
+
+            <div class="menu-top">
+                <h2 class="menu-title">Menu</h2>
+
+                <button class="menu-close-btn" data-mobile-menu-close-btn>
+                    <ion-icon name="close-outline"></ion-icon>
+                </button>
+            </div>
+
+            <ul class="mobile-menu-category-list">
+                <li class="menu-category">
+                    <a href="/" class="menu-title">Home</a>
+                </li>
+
+                <div class="menu-category-container">
+                    <!-- <li class="menu-category">
+                        <button class="accordion-menu" data-accordion-btn>
+                            <p class="menu-title">Men's</p>
+                        </button>
+                    </li>
+    
+                    <li class="menu-category">
+                        <button class="accordion-menu" data-accordion-btn>
+                            <p class="menu-title">Women's</p>
+                        </button>
+                    </li>
+    
+                    <li class="menu-category">
+                        <button class="accordion-menu" data-accordion-btn>
+                            <p class="menu-title">Jewelry</p>
+                        </button>
+                    </li>
+    
+                    <li class="menu-category">
+                        <button class="accordion-menu" data-accordion-btn>
+                            <p class="menu-title">Perfume</p>
+                        </button>
+                    </li> -->
+                </div>
+
+
+
+                <li class="menu-category">
+                    <a href="/shop" class="menu-title">Shops</a>
+                </li>
+
+                <li class="menu-category">
+                    <a href="/myorders" class="menu-title">Orders</a>
+                </li>
+
+                <li class="menu-category">
+                    <a href="/hot" class="menu-title">Hot Offers</a>
+                </li>
+
+            </ul>
+
+            <div class="menu-bottom">
+
+                <ul class="menu-category-list">
+
+                    <li class="menu-category">
+
+                        <button class="accordion-menu" data-accordion-btn>
+                            <p class="menu-title">Language</p>
+
+                            <ion-icon name="caret-back-outline" class="caret-back"></ion-icon>
+                        </button>
+
+                        <ul class="submenu-category-list" data-accordion>
+
+                            <li class="submenu-category">
+                                <a href="/" class="submenu-title">English</a>
+                            </li>
+                        </ul>
+
+                    </li>
+
+                    <li class="menu-category">
+                        <button class="accordion-menu" data-accordion-btn>
+                            <p class="menu-title">Currency</p>
+                            <ion-icon name="caret-back-outline" class="caret-back"></ion-icon>
+                        </button>
+
+                        <ul class="submenu-category-list" data-accordion>
+                            <li class="submenu-category">
+                                <a href="/" class="submenu-title">IND</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+
+                <ul class="menu-social-container">
+                    <!-- Social media links  -->
+                </ul>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+
+    <script>
+
+
+
+        $(document).ready(function () {
+            $('#search-input').on('input', function () {
+                const searchTerm = $(this).val();
+
+                $.ajax({
+                    url: '/api/v1/user/getSuggestions',
+                    method: 'GET',
+                    data: { term: searchTerm },
+                    success: function (data) {
+                        // Update the suggestions on the page
+                        $('#suggestions').empty();
+                        if (searchTerm.trim() !== '') {
+                            data.forEach(function (product, index) {
+                                var listItem = $('<li>' + product + '</li>');
+                                listItem.on('click', function () {
+                                    $('#search-input').val(product);
+                                    $('#suggestions').empty();
+                                });
+                                $('#suggestions').append(listItem);
+                            });
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error(textStatus, errorThrown);
+                    }
+                });
+            });
+        });
+
+
+        // Handle product search 
+        $('.search-btn').on('click', function () {
+            performSearch();
+        });
+
+        $('#search-input').on('keydown', function (event) {
+            if (event.keyCode === 13) {
+                performSearch();
+                return false; // Prevent form submission
+            }
+        });
+
+        function performSearch() {
+            var searchTerm = $('#search-input').val();
+
+            // Clear the suggestions and input
+            $('#search-input').val('');
+            $('#suggestions').empty();
+
+            if (window.location.pathname !== '/shop') {
+                // Redirect to the shop page with the search term as a query parameter
+                window.location.href = '/shop?search=' + encodeURIComponent(searchTerm);
+            } else {
+                // Execute the search functionality on the current page (already on /shop)
+                handleProductPaginationClick(1, searchTerm, null);
+            }
+        }
+
+
+
+        window.onload = async () => {
+            await getCategories()
+        }
+        const logoutButtons = document.querySelectorAll('.logout');
+
+        if (logoutButtons.length > 0) {
+            logoutButtons.forEach(button => {
+                button.addEventListener('click', async () => {
+                    try {
+                        await logout();
+                    } catch (error) {
+                        console.error('Error occurred during logout:', error);
+                    }
+                });
+            });
+        }
+    </script>
+
+
+    <script>
+        const loginForm = document.getElementById('login');
+        const emailFields = document.querySelectorAll('[email-field]');
+
+
+        // const password = document.querySelector('[password-field]');
+        const msgError = document.getElementById('message-error')
+        const otpLoginForm = document.getElementById('otp-login-form');
+        const nameError = document.getElementById('name-error')
+        const emailError = document.querySelector('[email-error]')
+        const commonError = document.querySelector('[data-email-error]')
+
+        const passError = document.querySelector('[password-error]')
+        const mobileError = document.querySelector('[mobile-error]')
+        const confirmPassError = document.querySelector('[confirm-password-error]')
+        const signupForm = document.getElementById('signup-form');
+        let globalInputAccess;
+
+        const otpForm = document.getElementById('otp-form');
+        const otpError = document.getElementById('otp-error')
+
+
+        // OTP LOGIN
+        otpLoginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const contactValue = document.getElementById('email1').value;
+            try {
+
+                let preferredMethod
+                let contactData
+
+                if (validateEmail(contactValue)) {
+                    preferredMethod = 'email';
+                    contactData = { email: contactValue };
+                } else if (validatePhoneNumber(contactValue)) {
+                    preferredMethod = 'phone';
+                    contactData = { phone: contactValue };
+                } else {
+                    commonError.textContent = "Invalid email or phone number"
+                    return
+                }
+
+                // console.log(preferredMethod, contactData)
+
+                const res = await axios({
+                    method: 'POST',
+                    url: '/api/v1/user/generate-otp',
+                    data: {
+                        preferredMethod,
+                        contactData
+                    },
+                });
+
+                // console.log(res)
+
+                if (res.data.status == "success") {
+                    globalInputAccess = contactData
+                    showToast();
+                    setToastMessage("Success", res.data.message);
+                    startResendTimer()
+                    setTimeout(() => {
+                        showOTPForm()
+                    }, 1000)
+
+                } else {
+                    const errorData = response.data;
+                    console.error(errorData);
+                }
+
+            } catch (err) {
+                if (err.response) {
+                    console.log(err.response.data.message)
+                    emailError.textContent = err.response.data.message
+                    commonError.textContent = err.response.data.message;
+                } else {
+                    emailError.textContent = ''
+                    commonError.textContent = '';
+
+                }
+            }
+        });
+
+
+        otpForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            try {
+                let email
+                let phoneNumber
+                if (globalInputAccess.email) {
+                    email = globalInputAccess.email
+                } else if (globalInputAccess.phone) {
+                    phoneNumber = globalInputAccess.phone
+                }
+
+                const otpInputs = document.querySelectorAll('.otp');
+                let otp = "";
+                let res
+                for (let i = 0; i < otpInputs.length; i++) {
+                    otp += otpInputs[i].value;
+                }
+
+                if (email) {
+                    res = await axios.post(`/api/v1/user/verify-otp`, {
+                        email,
+                        otp
+                    });
+                } else if (phoneNumber) {
+                    res = await axios.post(`/api/v1/user/verify-otp`, {
+                        phoneNumber,
+                        otp
+                    });
+                }
+
+                if (res) {
+
+                    if (res.data.status === "success") {
+                        location.assign('/')
+                    } else {
+                        console.log("Failed");
+                    }
+                }
+            } catch (error) {
+                if (error.response) {
+                    otpError.textContent = error.response.data.message
+                } else {
+                    otpError.textContent = ''
+                }
+            }
+        });
+
+        // LOGIN 
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const email = document.querySelector("#email3")
+            const password = document.querySelector("#pass1")
+
+            const emailValue = email.value.trim();
+            const passwordValue = password.value.trim();
+            try {
+                const res = await axios({
+                    method: 'POST',
+                    url: '/api/v1/user/login',
+                    data: {
+                        email: emailValue, password: passwordValue
+                    },
+                });
+                if (res.data.status == "success") {
+                    location.assign('/')
+                } else {
+                    const errorData = res.data;
+                    console.error(errorData);
+                }
+            } catch (err) {
+                const errData = err.response.data.message
+                if (errData) {
+                    msgError.textContent = errData
+                } else {
+                    msgError.textContent = ''
+                }
+            }
+        });
+
+
+        // SIGN UP
+        signupForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            try {
+                const username = document.getElementById('username').value;
+                const email = document.getElementById('email2').value;
+                const mobile = document.getElementById('mobile').value;
+                const password = document.getElementById('pass2').value;
+                const confirmpassword = document.getElementById('confirmpass2').value;
+
+                // console.log(confirmpassword)
+
+                // const emailError = document.getElementById('[email-error]')
+                // const passError = document.getElementById('[password-error]')
+
+
+                const res = await axios({
+                    method: 'POST',
+                    url: '/api/v1/user/signup',
+                    data: {
+                        username, email, password, confirmpassword, mobile
+                    },
+                });
+
+
+
+                if (res.data.status == "success") {
+                    globalInputAccess = { phone: mobile }
+                    showToast();
+                    setToastMessage("Success", `OTP sent to ${email} Successfully.`);
+                    startResendTimer()
+                    setTimeout(() => {
+                        showOTPForm()
+                    }, 1000)
+                }
+                else {
+                    console.log(res.data);
+                }
+            }
+            catch (err) {
+                const errData = err.response.data.message
+                if (errData.username) {
+                    nameError.textContent = errData.username
+                } else {
+                    nameError.textContent = ''
+                }
+
+                if (errData.email) {
+                    emailError.textContent = errData.email
+                } else {
+                    emailError.textContent = ''
+                }
+
+                if (errData.password) {
+                    passError.textContent = errData.password
+                }
+                else {
+                    passError.textContent = ''
+                }
+
+                if (errData.mobile) {
+                    mobileError.textContent = errData.mobile
+                }
+                else {
+                    mobileError.textContent = ''
+                }
+                if (errData.confirmPassword) {
+                    confirmPassError.textContent = errData.confirmPassword
+                }
+                else {
+                    confirmPassError.textContent = ''
+                }
+            }
+        });
+
+
+        emailFields.forEach((field) => {
+            const emailError = field.parentNode.querySelector('[data-email-error]');
+
+            field.addEventListener('input', async (e) => {
+                const currentEmail = e.target.value;
+                try {
+                    const res = await axios({
+                        method: 'POST',
+                        url: '/api/v1/user/login/validate',
+                        data: {
+                            email: currentEmail,
+                        },
+                    });
+
+                    if (res.data.status === 'success') {
+                        emailError.textContent = '';
+                    } else {
+                        emailError.textContent = res.data.message;
+                    }
+                } catch (err) {
+                    if (err.response && err.response.status === 401) {
+                        emailError.textContent = err.response.data.message;
+
+                    } else {
+                        emailError.textContent = '';
+                    }
+                }
+            });
+        });
+
+        // OTP Resend START
+
+        const resendBtn = document.getElementById('resendBtn');
+
+
+        let otpResendCounter = 0;
+        let otpResendTimer;
+
+        async function resendOTP(preferredMethod, contactData) {
+
+            try {
+                otpResendCounter++;
+
+                const res = await axios({
+                    method: 'POST',
+                    url: '/api/v1/user/generate-otp',
+                    data: {
+                        preferredMethod,
+                        contactData
+                    },
+                });
+
+                // console.log(res)
+
+                if (res.data.status == "success") {
+                    globalInputAccess = contactData
+                    otpForm.reset()
+                    otpError.textContent = ""
+
+                    startResendTimer()
+                    setTimeout(() => {
+                        showOTPForm()
+                    }, 1000)
+
+                } else {
+                    const errorData = response.data;
+                    console.error(errorData);
+                }
+
+            } catch (err) {
+                if (err.response) {
+                    console.log(err.response.data.message)
+                    emailError.textContent = err.response.data.message
+                    commonError.textContent = err.response.data.message;
+                } else {
+                    emailError.textContent = ''
+                    commonError.textContent = '';
+
+                }
+            }
+        }
+
+        function startResendTimer() {
+            let timerCount = 60; // Set the countdown time in seconds
+            resendBtn.disabled = true; // Disable the resend button during the countdown
+
+            otpResendTimer = setInterval(() => {
+                if (timerCount > 0) {
+                    resendBtn.innerHTML = `Resend OTP <b>00:${timerCount}</b> 's`;
+                    timerCount--;
+                } else {
+                    clearInterval(otpResendTimer);
+                    resendBtn.textContent = "Resend OTP";
+                    resendBtn.disabled = false; // Enable the resend button after the countdown
+                }
+            }, 1000);
+        }
+
+
+        resendBtn.addEventListener('click', async (event) => {
+            event.preventDefault();
+            const contactValue = document.getElementById('email1').value ? document.getElementById('email1').value : document.getElementById('email2').value;
+
+            if (otpResendCounter < 3) { // Allowing maximum 3 resend attempts
+                if (validateEmail(contactValue)) {
+                    resendOTP('email', { email: contactValue });
+                } else if (validatePhoneNumber(contactValue)) {
+                    resendOTP('phone', { phone: contactValue });
+                }
+                startResendTimer();
+            } else {
+                resendBtn.innerHTML = `<span class="invalid">maximum resend attempts exceeded</span>`;
+            }
+        });
+
+
+
+        // OTP Resend End
+
+
+        // Contact Values Validation
+        function validateEmail(email) {
+            const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return EMAIL_REGEX.test(email);
+        }
+
+        function validatePhoneNumber(phone) {
+            const PHONE_REGEX = /^\d{10}$/;
+            return PHONE_REGEX.test(phone);
+        }
+
+
+        // dropdown animation desktop
+        var desktopAvatar = document.querySelector('[data-menu-user-action]')
+        const desktopDropdown = document.querySelector("[profile-dropDown]")
+
+        desktopAvatar.addEventListener('click', (event) => {
+            desktopDropdown.classList.toggle('close');
+        })
+
+        // dropdown animation mobile
+
+        var avatar = document.querySelector('[data-mobile-user-action]');
+        const dropdown = document.querySelector(".mobile-profile-dropDown")
+
+
+        avatar.addEventListener('click', function (event) {
+            dropdown.classList.toggle('close');
+        });
+
+        var toggleButtons = document.querySelectorAll('.dropdown-toggle');
+
+
+
+
+
+
+
+
+    </script>

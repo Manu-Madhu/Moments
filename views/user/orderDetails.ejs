@@ -1,0 +1,775 @@
+<%- include ('../layouts/header.ejs') %>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        .horizontal.timeline {
+            display: flex;
+            position: relative;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .horizontal.timeline:before {
+            content: '';
+            display: block;
+            position: absolute;
+            /* width: 100%; */
+            height: .2em;
+            background-color: hsl(152, 51%, 52%);
+        }
+
+        .horizontal.timeline .line {
+            display: block;
+            position: absolute;
+            height: .2em;
+            background-color: hsl(152, 51%, 52%);
+        }
+
+        .horizontal.timeline .steps {
+            display: flex;
+            position: relative;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .horizontal.timeline .steps .step {
+            display: block;
+            position: relative;
+            bottom: calc(100% + 1em);
+            padding: .33em;
+            margin: 0 2em;
+            box-sizing: content-box;
+            color: hsl(152, 51%, 52%);
+            background-color: currentColor;
+            border: .25em solid white;
+            border-radius: 50%;
+            z-index: 500;
+        }
+
+        .horizontal.timeline .steps .step:first-child {
+            margin-left: 0;
+        }
+
+        .horizontal.timeline .steps .step:last-child {
+            margin-right: 0;
+            color: hsl(0, 0%, 85%);
+        }
+
+        .horizontal.timeline .steps .step span {
+            position: absolute;
+            top: calc(100% + 1em);
+            left: 50%;
+
+            white-space: nowrap;
+            color: #000;
+            opacity: .4;
+        }
+
+        .horizontal.timeline .steps .step.current:before {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 1em;
+            background-color: currentColor;
+            border-radius: 50%;
+            opacity: 0;
+            z-index: -1;
+            animation-name: animation-timeline-current;
+            animation-duration: 2s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-out;
+        }
+
+        .horizontal.timeline .steps .step.current span {
+            opacity: .8;
+        }
+
+        @keyframes animation-timeline-current {
+            from {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+            }
+        }
+    </style>
+    <div class="container">
+
+        <div class="header">
+            <p>Tracking My Order</p>
+            <nav>
+                <ul class="menu-category-list">
+                    <li class="meanu-category"><a class="ajax-link active" href="/orders">Orders</a></li>
+                    <li><a class="ajax-link" href="/delivered">Delivered</a></li>
+                    <li><a class="ajax-link" href="/cancelled">Cancelled</a></li>
+
+                </ul>
+            </nav>
+        </div>
+
+        <main id="orders-history">
+            <!-- DYNAMIC DATA COMES  -->
+
+            <input type="hidden" id="rating-input" name="rating" value="" />
+
+        </main>
+
+
+        <div class="form-popup-bg">
+            <div class="form-container">
+                <button id="btnCloseForm" class="modal-close-btn">
+                    <ion-icon id="btnCloseForm" name="close-outline"></ion-icon>
+                </button>
+                <h1>Cancel Order Request</h1>
+                <!-- <p>For more information. Please complete this form.</p> -->
+
+                <form id="reasonForCancel" method="post">
+                    <input type="hidden" id="orderId">
+
+                    <div class="form-group">
+                        <label for="">Reason for Order Canceling</label>
+                        <textarea class="form-control" id="reason" name="reason" type="text" cols="30"
+                            rows="5"></textarea>
+                        <span class="invalid error" id="reason-error"></span>
+
+                    </div>
+
+                    <button type="submit">Order Cancel</button>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        // Handle Orders Pagination
+
+        // Assuming you have included the Axios library in your HTML file
+        const ajaxLinks = document.querySelectorAll('.ajax-link');
+
+
+        ajaxLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+
+                const href = link.getAttribute('href');
+                const url = `/api/v1/user/orders`;
+
+                let queryString = '';
+                if (href === '/delivered') {
+                    queryString += `${url}/?status=delivered`;
+                } else if (href === '/cancelled') {
+                    queryString += `${url}/?status=cancelled`;
+                } else if (href === '/return') {
+                    queryString += `${url}/?status=return`;
+                } else {
+                    queryString += `${url}`;
+                }
+
+                // Remove active class from all links
+                ajaxLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+
+                // Add active class to the clicked link
+                link.classList.add('active');
+
+
+                axios.get(queryString)
+                    .then(response => {
+                        console.log(response);
+
+                        const row = document.querySelector('[orders-history]');
+                        const { data } = response.data;
+
+                        // Clear existing content from the DOM
+                        while (row.firstChild) {
+                            row.firstChild.remove();
+                        }
+
+                        const promises = data.map(order => {
+                            const { items, shippingAddress } = order;
+                            const productId = items[0].product;
+                            const productRequest = axios.get(`/api/v1/admin/product/${productId}`);
+                            const cartRequest = axios.get('/api/v1/user/cart');
+
+                            return Promise.all([productRequest, cartRequest])
+                                .then(([productResponse, cartResponse]) => {
+                                    const { products } = productResponse.data.data;
+                                    const { cart } = cartResponse.data;
+
+                                    const shippingAddressFound = cart.shippingAddress.find(address => address._id === order.shippingAddress);
+                                    if (!shippingAddressFound) {
+                                        console.log("No address found");
+                                    }
+
+                                    const MAX_DESCRIPTION_LENGTH = 50;
+                                    let truncatedDescription = products.description;
+                                    if (truncatedDescription.length > MAX_DESCRIPTION_LENGTH) {
+                                        truncatedDescription = truncatedDescription.substring(0, MAX_DESCRIPTION_LENGTH) + '...';
+                                    }
+
+                                    const orderedDetailsCard = `
+                <div class="row fade-in-animation" data-order-id="${order.orderID}" onclick="handleOrders(event)">
+                  <div class="product_details" data-order-id="${order.orderID}" onclick="handleOrders(event)">
+                    <div class="product_data_group" data-order-id="${order.orderID}" onclick="handleOrders(event)">
+                      <div class="product_image">
+                        ${products.image.map((path, index) => {
+                                        const newPath = path.replace("public", "");
+                                        console.log(newPath);
+                                        if (index === 0) {
+                                            return `<img src="${newPath}" width="100"/>`;
+                                        }
+                                    })}
+                      </div>
+                      <div class="group_rating">
+                        <div class="product_name">
+                          <p>${products.name}</p>
+                        </div>
+                        <div class="showcase-rating">
+                            
+  ${products.rating >= 1 ? '<ion-icon name="star" role="img" class="md hydrated" aria-label="star"></ion-icon>' : '<ion-icon name="star-outline" role="img" class="md hydrated" aria-label="star outline"></ion-icon>'}
+  ${products.rating >= 2 ? '<ion-icon name="star" role="img" class="md hydrated" aria-label="star"></ion-icon>' : '<ion-icon name="star-outline" role="img" class="md hydrated" aria-label="star outline"></ion-icon>'}
+  ${products.rating >= 3 ? '<ion-icon name="star" role="img" class="md hydrated" aria-label="star"></ion-icon>' : '<ion-icon name="star-outline" role="img" class="md hydrated" aria-label="star outline"></ion-icon>'}
+  ${products.rating >= 4 ? '<ion-icon name="star" role="img" class="md hydrated" aria-label="star"></ion-icon>' : '<ion-icon name="star-outline" role="img" class="md hydrated" aria-label="star outline"></ion-icon>'}
+  ${products.rating >= 5 ? '<ion-icon name="star" role="img" class="md hydrated" aria-label="star"></ion-icon>' : '<ion-icon name="star-outline" role="img" class="md hydrated" aria-label="star outline"></ion-icon>'}
+</div>
+
+                      </div>
+                    </div>
+                    <div class="product_price">
+                      <p>₹<span>${order.totalPrice}/-</span></p>
+                    </div>
+                  </div>
+                  <div class="tracking_status" data-order-id="${order.orderID}" onclick="handleOrders(event)">
+                    ${order.status === 'delivered'
+                                            ? '<span class="notification_badge done"></span>'
+                                            : order.status === 'cancelled'
+                                                ? '<span class="notification_badge fail"></span>'
+                                                : ''}
+                    <p>${order.status}</p>
+                    ${order.status === 'delivered' ? '<small>Your item has been delivered</small>' : ''}
+                  </div>
+                </div>`;
+
+                                    const tempElement = document.createElement('div');
+                                    tempElement.setAttribute("id", "order_item");
+                                    tempElement.innerHTML = orderedDetailsCard;
+                                    row.append(tempElement);
+                                });
+                        });
+
+                        Promise.all(promises)
+                            .then(() => {
+                                // All rendering is complete
+                            })
+                            .catch(error => {
+                                console.error(error);
+                            });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            });
+        });
+
+    </script>
+
+    <script>
+
+        const orderDetails = localStorage.getItem('myorder')
+
+        if (orderDetails) {
+
+            const order = JSON.parse(orderDetails)
+            let currentStatus = order.status
+
+            const initialOrder = order.items[0]
+
+            var row = document.querySelector('#orders-history')
+
+            $.ajax({
+                type: "GET",
+                url: `/api/v1/admin/product/${initialOrder.product}`,
+                success: function (productResponse) {
+                    console.log(productResponse)
+                    const { products } = productResponse.data;
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/api/v1/user/cart",
+                        success: function (cartResponse) {
+                            const { cart } = cartResponse
+
+                            let shippingAddress = cart.shippingAddress.find(address => address._id === order.shippingAddress)
+                            console.log("shipping address")
+                            console.log(shippingAddress)
+                            if (!shippingAddress) {
+                                console.log("no address found")
+                            }
+
+
+
+                            const orderedDetailsCard = `
+              <div class="details-row">
+                <div class="orders_container">
+                  <div class="product_details">
+                    <div class="product_image">
+                      ${products.image.map((path, index) => {
+                                const newPath = path.replace("public", "");
+                                console.log(newPath)
+                                if (index === 0) {
+                                    return `<img src="${newPath}" width="100"/>`
+                                }
+                            })}
+                    </div>
+
+
+                    <div class="product_name">
+                      <p>${products.name}</p>
+                    </div>
+                    <div class="product_desc">
+                      <p></p>
+                    </div>
+                    <div class="rating"></div>
+                    <div class="product_price">
+                      <p>MRP <span>${order.totalPrice}/-</span></p>
+                    </div>
+                  </div>
+
+                  <div class="tracking_status">
+                        <div class="horizontal timeline" id="timelineProgress">
+                         <div class="steps">
+                        <div class="step ${currentStatus === 'pending' ? 'current' : ''}">
+                          <span>To be prepared</span>
+                        </div>
+                        <div class="step ${currentStatus === 'confirmed' ? 'current' : ''}">
+                          <span>Confirmed</span>
+                        </div>
+                        <div class="step ${currentStatus === 'shipped' ? 'current' : ''}">
+                          <span>Shipped</span>
+                        </div>
+                        <div class="step ${currentStatus === 'delivered' ? 'current' : ''}" style="${currentStatus === 'delivered' ? `display:block` : `display:none`}">
+                        <span>Delivered</span>
+                        </div>
+                        <div class="step ${currentStatus === 'cancelled' ? 'current' : ''}" style="${currentStatus === 'cancelled' ? `display:block` : `display:none`}">
+                        <span>Cancelled</span>      
+                        </div>
+                      </div>
+                      <div class="line"></div>
+                    </div>
+                    
+                  </div>
+
+              
+
+              </div>
+
+              <div class="delivery_address address_details">
+                <div class="header">
+                  <p>Delivery Address</p>
+                </div>
+                <div class="address">
+                  <p name>${shippingAddress.custName}</p>
+                  <address>${shippingAddress.address},${shippingAddress.city},${shippingAddress.state},${shippingAddress.country},${shippingAddress.zipCode}</address>
+                </div>
+                <div class="conatact">
+                  <p>${shippingAddress.mobile}</p>
+                </div>
+              </div>
+
+              
+              ${currentStatus === 'delivered' ? `
+              <div class="payment_details">
+                <p payment-status="" style="
+    font-size: var(--fs-6);
+">Payment Successful</p>
+                <p payment-method>Method - ${order.paymentMethod === 'cod' ? `Cash On Delivery` : 'UPI Payment'}</p>
+                ${order.paymentMethod === 'upi' ? `<p payment_bank>
+                  Banking ICICI
+                </p>`: ''}
+                <button onClick="downloadInvoice('${order.orderID}')">Invoice</button>
+              </div>
+</div>
+                    
+                        
+                  
+
+              
+              ` : ''}
+              
+
+            ${currentStatus === 'delivered' ?
+                                    ''
+                                    : currentStatus === 'cancelled' ? `<div class="cancel_order">
+                <span> Cancelled</span>
+              </div>` :
+                                        `<div class="cancel_order">
+                <button id="btnOpen" onClick="showPopup('${order.orderID}')" >Cancel Order</button>
+              </div>`
+                                }
+
+            </div>
+           
+            `
+
+                            const tempElement = document.createElement('div');
+                            tempElement.setAttribute("class", "order_details");
+                            tempElement.innerHTML = orderedDetailsCard;
+                            row.append(tempElement);
+
+                            const statusOrder = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'];
+                            const status = statusOrder.find((item) => item == currentStatus)
+
+                            let progressPercentage;
+                            let lineColor;
+
+                            if (status === 'pending') {
+                                progressPercentage = 10;
+                                lineColor = 'hsl(152, 51%, 52%)';
+                            } else if (status === 'confirmed') {
+                                progressPercentage = 30;
+                                lineColor = 'hsl(152, 51%, 52%)';
+                            } else if (status === 'shipped') {
+                                progressPercentage = 60;
+                                lineColor = 'hsl(152, 51%, 52%)';
+                            } else if (status === 'delivered') {
+                                progressPercentage = 90;
+                                lineColor = 'hsl(152, 51%, 52%)';
+                            } else if (status === 'cancelled') {
+                                progressPercentage = 100;
+                                lineColor = 'hsl(0, 100%, 50%)';
+                            }
+
+
+                            const timelineProgressElement = document.getElementById('timelineProgress');
+
+                            const styleElement = document.querySelector('style');
+                            const cssRule = `.horizontal.timeline:before { width: ${progressPercentage}%  }`;
+
+                            styleElement.textContent += cssRule;
+
+                            //
+
+                            order.items.forEach((product, index) => {
+                                const { product: productID } = product
+                                console.log("product")
+
+
+                                $.ajax({
+                                    type: "GET",
+                                    url: `/api/v1/admin/product/${productID}`,
+                                    success: function (productResponse) {
+                                        const { products } = productResponse.data;
+
+
+                                        var row = document.querySelector('#orders-history')
+
+                                        const orderedDetailsCard = `
+                                            
+                            <div class="details-row">
+                                <div class="orders_container">
+                                <div class="product_details">
+                                    <div class="product_image">
+                                    ${products.image.map((path, index) => {
+                                            const newPath = path.replace("public", "");
+                                            console.log(newPath)
+                                            if (index === 0) {
+                                                return `<img src="${newPath}" width="100"/>`
+                                            }
+                                        })}
+                                    </div>
+
+                                    <div class="product_name">
+                                    <p>${products.name}</p>
+                                    </div>
+                                    <div class="product_desc">
+                                    <p></p>
+                                    </div>
+                                    ${currentStatus === 'delivered' ? `
+              <div class="product-grid" style="width:100%">
+              
+                            <div id="rating-stars-${products._id}" class="showcase-rating rating-stars"  data-order-id="${order.orderID}"  data-product-id="${products._id}"  onClick="handleStarRating(event)">
+                          <ion-icon data-value="1" style="font-size:23px; margin-right:10px; cursor:pointer;"  name="${product.rating >= 1 ? 'star' : 'star-outline'}" role="img" class="md hydrated" aria-label="star"></ion-icon>
+                          <ion-icon data-value="2" style="font-size:23px; margin-right:10px; cursor:pointer;" name="${product.rating >= 2 ? 'star' : 'star-outline'}" role="img" class="md hydrated" aria-label="star"></ion-icon>
+                          <ion-icon data-value="3" style="font-size:23px; margin-right:10px; cursor:pointer;"  name="${product.rating >= 3 ? 'star' : 'star-outline'}" role="img" class="md hydrated" aria-label="star"></ion-icon>
+                          <ion-icon data-value="4" style="font-size:23px; margin-right:10px; cursor:pointer;" name="${product.rating >= 4 ? 'star' : 'star-outline'}" role="img" class="md hydrated" aria-label="star outline"></ion-icon>
+                          <ion-icon data-value="5" style="font-size:23px; margin-right:10px; cursor:pointer;" name="${product.rating >= 5 ? 'star' : 'star-outline'}" role="img" class="md hydrated" aria-label="star outline"></ion-icon>
+                             </div>
+                            
+                        </div>
+
+
+                       
+
+
+                        
+              `: ''}
+                                    <div class="product_price">
+                                      <p>₹<span>${products.price}/-</span></p>
+                                    </div>
+                                </div>
+                            </div>
+            </div>
+
+            `
+
+                                        const tempElement = document.createElement('div');
+                                        tempElement.setAttribute("class", "order_details");
+                                        tempElement.innerHTML = orderedDetailsCard;
+                                        row.append(tempElement);
+
+                                        const statusOrder = ['pending', 'confirmed', 'shipped', 'delivered'];
+                                        const status = statusOrder.find((item) => item == currentStatus)
+
+                                        let progressPercentage;
+                                        let lineColor;
+
+                                        if (status === 'pending') {
+                                            progressPercentage = 10;
+                                            lineColor = 'hsl(152, 51%, 52%)';
+                                        } else if (status === 'confirmed') {
+                                            progressPercentage = 30;
+                                            lineColor = 'hsl(152, 51%, 52%)';
+                                        } else if (status === 'shipped') {
+                                            progressPercentage = 60;
+                                            lineColor = 'hsl(152, 51%, 52%)';
+                                        } else if (status === 'delivered') {
+                                            progressPercentage = 90;
+                                            lineColor = 'hsl(152, 51%, 52%)';
+                                        } else if (status === 'cancelled') {
+                                            progressPercentage = 90;
+                                            lineColor = 'red';
+                                        }
+
+
+                                        const timelineProgressElement = document.getElementById('timelineProgress');
+
+                                        const styleElement = document.querySelector('style');
+                                        const cssRule = `.horizontal.timeline:before { width: ${progressPercentage}%  }`;
+
+                                        styleElement.textContent += cssRule;
+
+
+                                    }
+                                });
+
+
+                            })
+
+
+
+                        }
+
+
+                    });
+                }
+            });
+
+
+
+        }
+
+        // rating start
+
+
+        const ratingInput = document.getElementById('rating-input');
+
+        function handleStarRating(event) {
+            const selectedStar = event.target;
+            const element = document.querySelector('.rating-stars');
+
+            const productId = element.dataset.productId;
+            const orderId = element.dataset.orderId;
+
+            if (selectedStar.tagName === 'ION-ICON') {
+                const selectedValue = selectedStar.getAttribute('data-value');
+                const ratingInput = document.getElementById('rating-input');
+
+                ratingInput.value = selectedValue;
+
+                $.ajax({
+                    type: "POST",
+                    url: `/api/v1/user/ratings`,
+                    data: JSON.stringify({ orderId: orderId, productId: productId, rating: ratingInput.value }),
+                    contentType: "application/json",
+                    success: function (response) {
+
+                        showToast()
+                        setToastMessage("success", response.message)
+
+                        // Store the updated order data back into local storage
+                        localStorage.setItem('myorder', JSON.stringify(response.order));
+
+                        // Update the star rating UI
+                        const stars = document.querySelectorAll(`#rating-stars-${productId} ion-icon`);
+                        stars.forEach(star => {
+                            const starValue = star.getAttribute('data-value');
+                            if (starValue <= selectedValue) {
+                                star.setAttribute('name', 'star');
+                            } else {
+                                star.setAttribute('name', 'star-outline');
+                            }
+                        });
+                    },
+                    error: function (error) {
+                        console.error(error);
+                    }
+                });
+
+
+            }
+        }
+
+        // rating end
+
+
+
+
+
+
+
+
+        function showPopup(orderId) {
+            var btnOpenForm = document.getElementById('btnOpen');
+            var formPopupBg = document.querySelector('.form-popup-bg')
+            var btnCloseForm = document.getElementById('btnCloseForm')
+
+            const orderIdInput = document.getElementById('orderId');
+            orderIdInput.value = orderId;
+
+            formPopupBg.classList.add('is-visible')
+
+            formPopupBg.addEventListener('click', function (event) {
+                if (event.target.classList.contains('form-popup-bg') || event.target.id === 'btnCloseForm') {
+                    event.preventDefault();
+                    formPopupBg.classList.remove('is-visible');
+                }
+            });
+        }
+
+
+
+
+
+        const form = document.getElementById('reasonForCancel');
+
+        let isValid = true;
+
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            clearErrorMessages();
+
+            // Validate form fields
+            const reason = document.getElementById('reason');
+            const orderIdInput = document.getElementById('orderId');
+            const orderId = orderIdInput.value;
+
+
+            isValid = true;
+
+
+
+            if (!reason.value.trim()) {
+                showError("reason-error", "Please enter the reason.");
+                isValid = false;
+            }
+
+            try {
+                if (isValid) {
+                    $.ajax({
+                        url: `/api/v1/user/orders/${orderId}`,
+                        method: 'PUT',
+                        success: function (response) {
+                            getOrders()
+                            showToast()
+                            setToastMessage("Cancelled", response.message);
+                        },
+                        error: function (error) {
+                            // Handle the error response
+                        }
+                    });
+
+
+                }
+            } catch (error) {
+                const message = error.response.data.message;
+                console.log(message)
+            }
+        });
+
+        function showError(element, errorMessage) {
+            const errorElement = document.querySelector(`#${element}`)
+            errorElement.textContent = errorMessage
+        }
+
+        function countWords(text) {
+            const trimmedText = text.trim();
+            const words = trimmedText.split(/\s+/);
+            return words.length;
+        }
+
+        function clearErrorMessages() {
+            const errorElements = document.querySelectorAll(".error");
+            errorElements.forEach((element) => {
+                element.textContent = "";
+            });
+        }
+
+        async function downloadInvoice(orderID) {
+            try {
+                // Make a request to download the invoice PDF
+                const response = await axios.get(`/api/v1/user/orders/${orderID}/invoice/`, {
+                    responseType: 'blob',
+                });
+
+                // Create a download link
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', `invoice-${orderID}.pdf`);
+
+                // Trigger the download
+                document.body.appendChild(link);
+                link.click();
+
+                // Clean up the object URL
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Failed to download invoice:', error);
+                // Handle the error appropriately
+            }
+        }
+
+        window.onload = function () {
+            
+            getCategories()
+        }
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+    <%- include ('../layouts/footer.ejs') %>

@@ -1,0 +1,594 @@
+<%- include ('../layouts/header.ejs') %>
+
+  <style>
+    .page-loader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
+
+
+  <main>
+    <!--
+      - BANNER
+    -->
+
+    <div class="banner">
+
+      <div class="container">
+
+        <div class="slider-container has-scrollbar" id="header-slider-item">
+
+
+          <div class="slider-item">
+
+            <img src="/src/images/banner-1.jpg" alt="women's latest fashion sale" class="banner-img">
+
+            <div class="banner-content">
+
+              <p class="banner-subtitle">Trending item</p>
+
+              <h2 class="banner-title">Gift Somthing Good </h2>
+
+              <p class="banner-text">
+                starting at ₹ <b>599</b>.00
+              </p>
+
+              <a href="/shop" class="banner-btn">Shop now</a>
+
+            </div>
+
+          </div>
+
+          <div class="slider-item">
+
+            <img src="/src/images/banner-2.jpg" alt="women's latest fashion sale" class="banner-img">
+
+            <div class="banner-content">
+
+              <p class="banner-subtitle">New Arrivals</p>
+
+              <h2 class="banner-title">Modern Sun Glasses</h2>
+
+              <p class="banner-text">
+                starting at ₹ <b>149</b>.00
+              </p>
+
+              <a href="#" class="banner-btn">Shop now</a>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+
+    <!--
+      - PRODUCT
+    -->
+
+    <div class="product-container">
+
+      <div class="container">
+        <div class="product-box">
+
+          <!--
+            - PRODUCT MINIMAL
+          -->
+
+          <div class="product-minimal">
+
+            <div class="product-showcase">
+
+              <h2 class="title">New Arrivals</h2>
+
+              <div id="new-arrivals-showcase-wrapper" class="showcase-wrapper has-scrollbar">
+                <!-- DYNAMIC DATA  -->
+
+              </div>
+            </div>
+
+
+            <div class="product-showcase">
+
+              <h2 class="title">Trending</h2>
+
+              <div id="trending-showcase-wrapper" class="showcase-wrapper has-scrollbar">
+                <!-- DYNAMIC DATA  -->
+              </div>
+            </div>
+
+            <div class="product-showcase">
+
+              <h2 class="title">Top Rated</h2>
+
+              <div id="topRated-showcase-wrapper" class="showcase-wrapper has-scrollbar">
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!--
+            - PRODUCT GRID
+          -->
+
+          <div class="product-main">
+
+            <h2 class="title">New Products</h2>
+
+            <div id="home-product-grid" class="product-grid">
+              <!-- DYNAMIC DATA  -->
+
+            </div>
+
+          </div>
+
+
+
+
+        </div>
+
+      </div>
+
+
+
+
+
+
+
+
+    </div>
+
+    </div>
+
+    </div>
+
+
+    <!--
+      - TESTIMONIALS, CTA & SERVICE
+    -->
+
+    <div>
+
+      <div class="container">
+
+        <div class="testimonials-box">
+
+          <!--
+              - TESTIMONIALS
+            -->
+
+          <div class="testimonial">
+
+            <h2 class="title">testimonial</h2>
+
+            <div class="testimonial-card">
+
+              <img src="/src/images/testimonial-1.jpg" alt="alan doe" class="testimonial-banner"
+                style="width:80px; height:80px">
+
+              <p class="testimonial-name">Alan Doe</p>
+
+              <p class="testimonial-title">CEO & Founder Invision</p>
+
+              <img src="/src/images/icons/quotes.svg" style="width:26px;" alt="quotation" class="quotation-img">
+
+              <p class="testimonial-desc">
+                Shopping at Anon has been an absolute delight! The website offers a wide range of high-quality products
+                that cater to my needs.
+              </p>
+
+            </div>
+
+          </div>
+
+
+
+          <!--
+              - CTA
+            -->
+
+          <div class="cta-container">
+
+            <!-- <img src="/src/images/cta-banner.jpg" alt="summer collection" class="cta-banner">
+
+            <a href="#" class="cta-content">
+
+              <p class="discount">25% Discount</p>
+
+              <h2 class="cta-title">Summer collection</h2>
+
+              <p class="cta-text">Starting @ ₹399</p>
+
+              <button class="cta-btn">Shop now</button>
+
+            </a> -->
+
+          </div>
+
+
+
+          <!--
+              - SERVICE
+            -->
+
+          <div class="service">
+
+            <h2 class="title">Our Services</h2>
+
+            <div class="service-container">
+
+              <a href="#" class="service-item">
+
+                <div class="service-icon">
+                  <ion-icon name="boat-outline"></ion-icon>
+                </div>
+
+                <div class="service-content">
+
+                  <h3 class="service-title">Worldwide Delivery</h3>
+                  <p class="service-desc">For Order Over $100</p>
+
+                </div>
+
+              </a>
+
+              <a href="#" class="service-item">
+
+                <div class="service-icon">
+                  <ion-icon name="rocket-outline"></ion-icon>
+                </div>
+
+                <div class="service-content">
+
+                  <h3 class="service-title">Next Day delivery</h3>
+                  <p class="service-desc">UK Orders Only</p>
+
+                </div>
+
+              </a>
+
+              <a href="#" class="service-item">
+
+                <div class="service-icon">
+                  <ion-icon name="call-outline"></ion-icon>
+                </div>
+
+                <div class="service-content">
+
+                  <h3 class="service-title">Best Online Support</h3>
+                  <p class="service-desc">Hours: 8AM - 11PM</p>
+
+                </div>
+
+              </a>
+
+              <a href="#" class="service-item">
+
+                <div class="service-icon">
+                  <ion-icon name="arrow-undo-outline"></ion-icon>
+                </div>
+
+                <div class="service-content">
+
+                  <h3 class="service-title">Return Policy</h3>
+                  <p class="service-desc">Easy & Free Return</p>
+
+                </div>
+
+              </a>
+
+              <a href="#" class="service-item">
+
+                <div class="service-icon">
+                  <ion-icon name="ticket-outline"></ion-icon>
+                </div>
+
+                <div class="service-content">
+
+                  <h3 class="service-title">30% money back</h3>
+                  <p class="service-desc">For Order Over $100</p>
+
+                </div>
+
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+
+
+    <!--
+        - BLOG
+      -->
+
+    <!-- <div class="blog">
+  
+        <div class="container">
+  
+          <div class="blog-container has-scrollbar">
+  
+            <div class="blog-card">
+  
+              <a href="#">
+                <img src="./assets/images/blog-1.jpg" alt="Clothes Retail KPIs 2021 Guide for Clothes Executives"
+                  width="300" class="blog-banner">
+              </a>
+  
+              <div class="blog-content">
+  
+                <a href="#" class="blog-category">Fashion</a>
+  
+                <a href="#">
+                  <h3 class="blog-title">Clothes Retail KPIs 2021 Guide for Clothes Executives.</h3>
+                </a>
+  
+                <p class="blog-meta">
+                  By <cite>Mr Admin</cite> / <time datetime="2022-04-06">Apr 06, 2022</time>
+                </p>
+  
+              </div>
+  
+            </div>
+  
+            <div class="blog-card">
+  
+              <a href="#">
+                <img src="./assets/images/blog-2.jpg" alt="Curbside fashion Trends: How to Win the Pickup Battle."
+                  class="blog-banner" width="300">
+              </a>
+  
+              <div class="blog-content">
+  
+                <a href="#" class="blog-category">Clothes</a>
+  
+                <h3>
+                  <a href="#" class="blog-title">Curbside fashion Trends: How to Win the Pickup Battle.</a>
+                </h3>
+  
+                <p class="blog-meta">
+                  By <cite>Mr Robin</cite> / <time datetime="2022-01-18">Jan 18, 2022</time>
+                </p>
+  
+              </div>
+  
+            </div>
+  
+            <div class="blog-card">
+  
+              <a href="#">
+                <img src="./assets/images/blog-3.jpg" alt="EBT vendors: Claim Your Share of SNAP Online Revenue."
+                  class="blog-banner" width="300">
+              </a>
+  
+              <div class="blog-content">
+  
+                <a href="#" class="blog-category">Shoes</a>
+  
+                <h3>
+                  <a href="#" class="blog-title">EBT vendors: Claim Your Share of SNAP Online Revenue.</a>
+                </h3>
+  
+                <p class="blog-meta">
+                  By <cite>Mr Selsa</cite> / <time datetime="2022-02-10">Feb 10, 2022</time>
+                </p>
+  
+              </div>
+  
+            </div>
+  
+            <div class="blog-card">
+  
+              <a href="#">
+                <img src="./assets/images/blog-4.jpg" alt="Curbside fashion Trends: How to Win the Pickup Battle."
+                  class="blog-banner" width="300">
+              </a>
+  
+              <div class="blog-content">
+  
+                <a href="#" class="blog-category">Electronics</a>
+  
+                <h3>
+                  <a href="#" class="blog-title">Curbside fashion Trends: How to Win the Pickup Battle.</a>
+                </h3>
+  
+                <p class="blog-meta">
+                  By <cite>Mr Pawar</cite> / <time datetime="2022-03-15">Mar 15, 2022</time>
+                </p>
+  
+              </div>
+  
+            </div>
+  
+          </div>
+  
+        </div>
+  
+      </div> -->
+
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+
+
+    // Fetch Banners
+
+    const getBanners = () => {
+      // Fetch header banners
+      $.ajax({
+        url: "/api/v1/user/banners?position=header",
+        method: "GET",
+        success: function (headerBanners) {
+          console.log(headerBanners)
+          updateHeaderBannersUI(headerBanners.data);
+        },
+        error: function (error) {
+          console.error("Error fetching header banners:", error);
+        },
+      });
+
+      $.ajax({
+        url: "/api/v1/user/banners?position=footer",
+        method: "GET",
+        success: function (footerBanners) {
+          updateFooterBannersUI(footerBanners.data);
+        },
+        error: function (error) {
+          console.error("Error fetching header banners:", error);
+        },
+      });
+    };
+
+    function updateHeaderBannersUI(headerBanners) {
+      const headerBannersContainer = document.querySelector("#header-slider-item");
+      headerBannersContainer.innerHTML = "";
+
+
+
+
+      headerBanners.forEach((banner) => {
+
+        const imagePath = banner.image;
+        const newPath = imagePath.replace("public", "");
+
+        const bannerElement = document.createElement("div");
+        bannerElement.classList.add("slider-item");
+
+        const imgElement = document.createElement("img");
+        imgElement.src = newPath;
+        imgElement.classList.add("banner-img");
+        bannerElement.appendChild(imgElement);
+
+        const bannerContent = document.createElement("div");
+        bannerContent.classList.add("banner-content");
+
+        const subtitleElement = document.createElement("p");
+        subtitleElement.classList.add("banner-subtitle");
+        subtitleElement.textContent = banner.subTitle;
+        bannerContent.appendChild(subtitleElement);
+
+        const titleElement = document.createElement("h2");
+        titleElement.classList.add("banner-title");
+        titleElement.textContent = banner.title;
+        bannerContent.appendChild(titleElement);
+
+        const textElement = document.createElement("p");
+        textElement.classList.add("banner-text");
+        textElement.innerHTML = `starting at ₹ <b>${banner.text}</b>.00`;
+        bannerContent.appendChild(textElement);
+
+        const btnElement = document.createElement("a");
+        btnElement.href = "#";
+        btnElement.classList.add("banner-btn");
+        btnElement.textContent = banner.button;
+        bannerContent.appendChild(btnElement);
+
+        bannerElement.appendChild(bannerContent);
+
+        headerBannersContainer.appendChild(bannerElement);
+      });
+    }
+
+    // // footer pending
+    // function updateFooterBannersUI(footerBanners) {
+
+    // }
+
+
+    function updateFooterBannersUI(footerBanners) {
+      const ctaContainer = document.querySelector(".cta-container");
+
+      footerBanners.forEach((banner) => {
+
+        const imgElement = document.createElement("img");
+        imgElement.src = banner.image.split("public")[1];
+        imgElement.alt = banner.title;
+        imgElement.classList.add("cta-banner");
+        ctaContainer.appendChild(imgElement);
+
+        const ctaContent = document.createElement("a");
+        ctaContent.href = banner.links;
+        ctaContent.classList.add("cta-content");
+
+        const discountElement = document.createElement("p");
+        discountElement.classList.add("discount");
+        discountElement.textContent = banner.button;
+        ctaContent.appendChild(discountElement);
+
+        const titleElement = document.createElement("h2");
+        titleElement.classList.add("cta-title");
+        titleElement.textContent = banner.title;
+        ctaContent.appendChild(titleElement);
+
+        const textElement = document.createElement("p");
+        textElement.classList.add("cta-text");
+        textElement.textContent = banner.subTitle;
+        ctaContent.appendChild(textElement);
+
+        const btnElement = document.createElement("button");
+        btnElement.classList.add("cta-btn");
+        btnElement.textContent = banner.text;
+        ctaContent.appendChild(btnElement);
+
+        ctaContainer.appendChild(ctaContent);
+        ctaContainer.appendChild(ctaContainer);
+      });
+    }
+
+    getBanners();
+
+    window.onload = async function () {
+      newArrivals();
+      trending();
+      topRated();
+
+      await getHomeProducts()
+      await getCategories()
+    }
+
+
+  </script>
+
+
+
+  <%- include ('../layouts/footer.ejs') %>
