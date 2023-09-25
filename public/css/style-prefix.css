@@ -2042,6 +2042,7 @@ body::-webkit-scrollbar-thumb:hover {
   border: 1px solid var(--cultured);
   -webkit-border-radius: var(--border-radius-md);
   border-radius: var(--border-radius-md);
+  text-decoration: none;
 }
 
 .service-item {
@@ -2055,6 +2056,7 @@ body::-webkit-scrollbar-thumb:hover {
   -ms-flex-align: center;
   align-items: center;
   gap: 15px;
+  text-decoration: none;
 }
 
 .service-icon {
