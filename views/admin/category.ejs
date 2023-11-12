@@ -1,0 +1,176 @@
+<%- include('../partials/header.ejs')%>
+    <div class="container mx-auto px-2 min-vh-100 mt-[120px]">
+        <%- include('../partials/adminnav.ejs')%>
+            <div class="container mx-auto flex items-center justify-center">
+                <div class="flex flex-col md:flex-row w-full md:p-4 gap-3">
+                    <div class="md:w-1/4 bg-white d-flex pt-4 rounded-lg">
+                        <ul class="w-full flex flex-column items-center overflow-hidden p-2">
+                            <li class="dashOther fw-bold p-1 m-2 ps-4  flex w-full">
+                                <img src="/assets/admin/d9.png" alt="" class="object-cover me-2 ">
+                                <span><a class="text-decoration-none" style="color: #cdcdcd;"
+                                        href="/admin/Dashboard">DashBoard</a></span>
+                            </li>
+                            <li class="sideBarlist border p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d3.png" alt="" class="object-cover me-2">
+                                <span>
+                                    <a href="/admin/category" class="text-decoration-none">Category</a>
+                                </span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d2.png" alt="" class="object-cover me-2">
+                                <span>
+                                    <a href="/admin/productView" class="text-decoration-none"
+                                        style="color: #cdcdcd;">Product</a>
+                                </span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d4.png" alt="" class="object-cover me-2">
+                                <span>
+                                    <a href="/admin/coustomers" class="text-decoration-none"
+                                        style="color: #cdcdcd;">Customer</a>
+                                </span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d5.png" alt="" class="object-cover me-2">
+                                <span></span>
+                                <a href="/admin/order" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Order</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d6.png" alt="" class="object-cover me-2">
+                                <span></span>
+                                <a href="/admin/coupons" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Coupons</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d6.png" alt="" class="object-cover me-2">
+                                <span></span>
+                                <a href="/admin/logOut" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Logout</a></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="md:w-3/4">
+                        <div class="">
+                            <!-- OTHRT PART -->
+                            <div class="container-fluid Pa_table bg-white md:p-4">
+                                <% if(CategoryData.length> 0 ){%>
+                                    <div class="container-fluid bg-white P_table m-0 px-2">
+                                        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                                            <table id="example" class="table-auto w-full">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="first p-3 px-4"><span>ID</span></th>
+                                                        <th class="p-3"><span>Category</span></th>
+                                                        <th class="p-3"><span>Discription</span></th>
+                                                        <th class="p-3"><span>Offer</span></th>
+                                                        <th class="p-3"><span>Min Value</span></th>
+                                                        <th class="p-3"><span>Max Value</span></th>
+                                                        <th class="third p-3"><span>Action</span></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% CategoryData.forEach((category,index)=>{%>
+                                                        <tr class="mt-2">
+                                                            <td scope="col" class="px-4">
+                                                                <span class="couponListFont">
+                                                                    #<%=index+1%>
+                                                                </span>
+                                                            </td>
+                                                            <td scope="col" class="px-4">
+                                                                <span class="couponListFont">
+                                                                    <%= category.categoryName %>
+                                                                </span>
+                                                            </td>
+                                                            <td scope="col" class="px-4">
+                                                                <span class="couponListFont">
+                                                                    <%= category.categoryDiscription %>
+                                                                </span>
+                                                            </td>
+                                                            <td scope="col" class="px-4">
+                                                                <span class="couponListFont text-success fw-bold fs-5">
+                                                                    <%= category.offerValue %> %
+                                                                </span>
+                                                            </td>
+                                                            <td scope="col" class="px-4">
+                                                                <span class="couponListFont">
+                                                                    <%= category.minValue %>
+                                                                </span>
+                                                            </td>
+                                                            <td scope="col" class="px-4">
+                                                                <span class="couponListFont">
+                                                                    <%= category.maxValue %>
+                                                                </span>
+                                                            </td>
+                                                            <td scope="col"
+                                                                class="TableButton d-flex align-items-center"
+                                                                onsubmit="return confirmUpdate()">
+                                                                <% if(category.isAvailable===true){%>
+                                                                    <form
+                                                                        action="/admin/unlistCategory/<%= CategoryData[index]._id %>"
+                                                                        method="POST">
+                                                                        <button class="bg-red-500 text-white m-2 text"
+                                                                            type="submit">Unlist</button>
+                                                                    </form>
+                                                                    <%}else if(category.isAvailable===false){%>
+                                                                        <form
+                                                                            action="/admin/listCategory/<%= CategoryData[index]._id %>"
+                                                                            method="POST">
+                                                                            <button class="btn btn-success m-2 text"
+                                                                                type="submit">List</button>
+                                                                        </form>
+                                                                        <%}%>
+                                                                            <a href="/admin/updateCategory/<%= category._id %>"
+                                                                                class="btn btn-warning text-white catagoryEdit"
+                                                                                style="color:rgb(7, 7, 7)">
+                                                                                Edit
+                                                                        </a>
+                                                            </td>
+                                                        </tr>
+                                                        <%});%>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="w-full p-2 mb-3 mt-3">
+                                        <button class="bg-gradient-to-r from-lightRed to-red p-2 rounded text-white">
+                                            <a href="/admin/addCategory" class="text-decoration-none p-3">Add New Category</a>
+                                        </button>
+                                    </div>
+                                    <%}else{%>
+                                        <div class="d-flex flex-column align-items-center justify-content-center">
+                                            <lottie-player
+                                                src="https://assets2.lottiefiles.com/private_files/lf30_cgfdhxgx.json"
+                                                background="transparent" speed="1" style="width: 300px; height: 300px;"
+                                                loop autoplay></lottie-player>
+                                            <h5 style="font-weight: 600; color: #cdcdcd;">No Categorys Are Available Now
+                                            </h5>
+                                            <div class="conatiner my-3 pb-2">
+                                                <button class="btn btn-danger p-2">
+                                                    <a href="/admin/addCategory" class="text-decoration-none"
+                                                        style="color: white; font-size: 13.5px;">Add New Category</a>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <%}%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                // Add any customization options here
+            });
+        });
+    </script>
+    <script src="/js/alert.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+    <%- include('../partials/adminfooter.ejs')%>

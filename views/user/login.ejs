@@ -1,0 +1,49 @@
+<%- include("../partials/header.ejs")%>
+   <div class="container-fluid p-0 justify-content-center align-items-center signUp min-vh-100" style="margin-top: 6%;">
+      <!-- Nav Bar -->
+      <%- include("../partials/navBar.ejs")%>
+         <div class="container d-flex justify-content-center align-items-center p-5">
+            <div class="row rounded bg-white Card">
+               <!-- Card Image -->
+               <div class="col-md-6 p-0">
+                  <img src="/assets/nav/2.png" alt="" class="object-cover w-full">
+               </div>
+               <div class="left col-md-6 p-3 d-flex flex-column justify-content-center">
+                  <div class="w-full flex flex-col items-center justify-center">
+                     <h2 class="text-3xl font-bold text-gradient py-2">Log in to Exclusive</h2>
+                     <!-- <span class="text-3xl font-bold text-gradient">Enter your details</span> -->
+                     <div class="text-xs text text-danger mt-3">
+                        <%=locals.fail? fail:""%>
+                     </div>
+                  </div>
+                  <form action="/login" method="post" onsubmit="return fullyChecking()">
+                     <div class="credntials mt-4 d-flex flex-column gap-2 loginButton">
+                        <!-- Email -->
+                        <input class="loginInput p-1 " type="text" placeholder="Email " name="email" id="Email"
+                           onchange="emailValidate()" required>
+                        <span id="emailError" class="text text-danger  mb-2"></span>
+                        <!-- password -->
+                        <input class="loginInput p-1" type="password" placeholder="Password" name="password"
+                           id="Password" onchange="passwordValidate()" required>
+                        <span id="passwordError" class="text text-danger mb-2"></span>
+                        <div class="w-full flex flex-col md:flex-row md:justify-between md:items-center mt-2 ">
+                           <a href="/forGotPassword" class="text-decoration-none"><span
+                                 class="text-danger font-semibold">Forgot Password?</span>
+                           </a>
+                           <span>Don’t you have a account ? <a class="text-danger text-decoration-none font-semibold"
+                                 href="/signUp">SignUp</a>
+                           </span>
+                        </div>
+                        <button class=" text-white mt-2 mb-4 p-2 px-5 rounded" type="submit"
+                           onclick="emailValidate(),passwordValidate()">
+                           Login
+                        </button>
+
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+   </div>
+   <script src="/js/validation.js"></script>
+   <%- include("../partials/footer.ejs")%>

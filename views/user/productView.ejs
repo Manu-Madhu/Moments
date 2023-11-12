@@ -1,0 +1,240 @@
+<%- include("../partials/header.ejs")%>
+    <div class="container-fluid p-0 " style="margin-top: 7%;">
+        <%- include("../partials/navBar.ejs")%>
+            <section class="container my-5 pt-3 p-5">
+                <div class="w-full flex flex-col md:flex-row mt-5">
+                    <div class="md:w-1/2 flex flex-col md:flex-row gap-2 justify-center">
+                        <div class="flex md:flex-col gap-2">
+                            <div class="">
+                                <img src="../../productImages/<%= data.image[1]%>" alt="sideImage"
+                                    class="object-cover rounded hover:cursor-pointer w-20 smalImg">
+                            </div>
+                            <div class="">
+                                <img src="../../productImages/<%= data.image[2]%>" alt="sideImage"
+                                    class="object-cover rounded hover:cursor-pointer w-20 smalImg">
+                            </div>
+                            <div class="">
+                                <img src="../../productImages/<%= data.image[3]%>" alt="sideImage"
+                                    class="object-cover rounded hover:cursor-pointer w-20 smalImg">
+                            </div>
+                            <div class="">
+                                <img src="../../productImages/<%= data.image[4]%>" alt="sideImage"
+                                    class="object-cover rounded hover:cursor-pointer w-20 smalImg">
+                            </div>
+                            <div class="">
+                                <img src="../../productImages/<%= data.image[0]%>" alt="sideImage"
+                                    class="object-cover rounded hover:cursor-pointer w-20 smalImg">
+                            </div>
+                        </div>
+                        <div class="md:w-[450px]">
+                            <img class="object-cover rounded w-[100%]" src="../../productImages/<%= data.image[0]%>"
+                                alt="" id="zoom">
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 flex flex-col mt-3 md:mt-0">
+                        <h3 class="md:text-lg font-semibold truncate">
+                            <%= data.p_name %>
+                        </h3>
+                        <div class="flex items-center mt-1">
+                            <img src="/assets/product/star.png" alt="" class="object-cover w-3 h-3 md:w-4 md:h-4">
+                            <img src="/assets/product/star.png" alt="" class="object-cover w-3 h-3 md:w-4 md:h-4">
+                            <img src="/assets/product/star.png" alt="" class="object-cover w-3 h-3 md:w-4 md:h-4">
+                            <img src="/assets/product/star.png" alt="" class="object-cover w-3 h-3 md:w-4 md:h-4">
+                            <img src="/assets/product/star.png" alt="" class="object-cover w-3 h-3 md:w-4 md:h-4">
+                            <span> (150 reviews) &nbsp;| &nbsp;<span class="text-success">Instock</span></span>
+                        </div>
+                        <h2 class="flex items-center mt-2">
+                            <span class="text-dark">
+                                <h2>₹ &nbsp; </h2>
+                            </span>
+                            <%= data.finalPrice %> &nbsp;&nbsp;
+                                <span class="" style="text-decoration: line-through; color: #9a9a9a; font-size:20px;">₹
+                                    <%= data.price %>
+                                </span>
+                                &nbsp;
+                                <span class="text-success">
+                                    <h2>
+                                        <%= data.productOffer %>% off
+                                    </h2>
+                                </span>
+                        </h2>
+                        <div class="pt-4 ">
+                            <p class="text-slate-500">
+                                <%= data.description %>
+                            </p>
+                        </div>
+                        <!-- <h5 class="pt-2">Colors: Null</h5>
+                        <h5 class="pt-2">Size:</h5> -->
+                        <div class="pt-4">
+                            <div class="w-full border border-dark p_Delivery_Border">
+                                <div class="d-flex align-items-center p-3 gap-3">
+                                    <img class="img-fluid" src="/assets/product/icon-delivery.png" alt=""
+                                        style="width:35px">
+                                    <h6 class="text-xs md:hidden">Free Delivery</h6>
+                                    <h6 class="text-slate-500 hidden md:flex"> Estimated to delivered in 7 working days
+                                    </h6>
+                                </div>
+                                <hr class="p-0 m-0 bg-dark">
+                                <div class="d-flex align-items-center p-3 gap-3">
+                                    <img class="img-fluid" src="/assets/product/Icon-return.png" alt=""
+                                        style="width:35px">
+                                    <h6 class="text-slate-500">Return Delivery</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full flex flex-col md:flex-row mt-4 gap-2 ">
+                            <%if(user){%>
+                                <form action="" method="get" id="WhishList" class="w-full">
+                                    <input type="hidden" value="<%= data._id%>" id="whishlistProductId">
+                                    <button type="submit"
+                                        class="bg-gradient-to-r from-lightRed  to-red p-2 w-full md:w-1/2 rounded-lg text-white">
+                                        Add to Whishlist
+                                    </button>
+                                </form>
+                                <form action="" method="post" id="CartForm" class="w-full">
+                                    <input type="hidden" value="<%= data._id%>" id="cartProductId">
+                                    <button type="submit"
+                                        class="bg-gradient-to-r from-lightRed  to-red p-2 w-full md:w-1/2 rounded-lg text-white"
+                                        id="addtoCart">
+                                        Add to Cart
+                                    </button>
+                                </form>
+                                <%}else{%>
+                                    <form action="/login" method="get" class="w-full">
+                                        <input type="hidden" value="<%= data._id%>" id="whishlistProductId">
+                                        <button type="submit"
+                                            class="bg-gradient-to-r from-lightRed  to-red p-2 w-full md:w-1/2 rounded-lg text-white">
+                                            Add to Whishlist
+                                        </button>
+                                    </form>
+                                    <form action="/login" method="get" class="w-full">
+                                        <input type="hidden" value="<%= data._id%>" id="cartProductId">
+                                        <button type="submit"
+                                            class="bg-gradient-to-r from-lightRed  to-red p-2 w-full md:w-1/2 rounded-lg text-white"
+                                            id="addtoCart">
+                                            Add to Cart
+                                        </button>
+                                    </form>
+                                    <%}%>
+                        </div>
+                        <p class="text-success fw-bold mt-4 " id="CartSuccMsg"></p>
+                    </div>
+                </div>
+                <div class="pt-5">
+                    <hr class="bg-dark md:mt-10 md:mb-5">
+                </div>
+
+                <!-- view product -->
+                <div class="container flex p-3 items-center justify-content-between ">
+                    <div class="text-gradient text-3xl font-bold ">Related</div>
+                    <a href="/Shop">
+                        <button
+                            class="border border-[#ffc963] bg-lightRed/5 p-2 px-5 text-xs rounded-md
+                        text-[#DA9000] cursor-pointer md:p-2 md:px-10 md:text-sm md:rounded-2xl md:font-medium hover:text-darkRed">
+                            View All
+                        </button>
+                    </a>
+                </div>
+                <!-- Product Container -->
+                <section class="h-[200px] md:h-[500px] relative overflow-hidden container md:mt-3 py-0 md:px-3 ">
+                    <button class="pre-btn"><img class="pre-btn-img" src="/assets/icons/arrow.png" alt=""></button>
+                    <button class="nxt-btn"><img class="pre-btn-img" src="/assets/icons/arrow.png" alt=""></button>
+                    <div class="product-container overflow-x-scroll whitespace-nowrap">
+                        <% category.forEach((data,index)=>{ %>
+                            <div  class="flex md:flex-col m-2 border-2 rounded-xl h-[170px] md:h-[450px] min-w-[250px] shadow-xs overflow-hidden">
+                                <div class="w-1/2 md:w-full relative rounded-lg">
+                                    <a href="/detaildView/<%= data._id%>">
+                                        <img src="/productImages/<%=data.image[0] %>"
+                                            class="h-[170px] md:h-[300px] md:w-[250px] object-cover rounded-t-lg"
+                                            alt="">
+                                    </a>
+                                </div>
+                                <div class="p-2 w-1/2 md:w-full">
+                                    <h2 class="text-sm font-semibold truncate">
+                                        <%= data.p_name %>
+                                    </h2>
+                                    <div class="flex flex-col md:flex-row justify-between items-center mt-2">
+                                        <div class="space-x-2">
+                                            <span class="font-medium">
+                                                Rs. <%= data.finalPrice %>
+                                            </span>
+                                            <span class="line-through text-[#adadad]">₹ <%= data.price %></span>
+                                        </div>
+                                        <a class="hidden md:flex border-2 drop-shadow-sm hover:bg-white  hover:border-lightRed bg-gradient-to-r from-lightRed to-red font-medium text-white hover:black  rounded-2xl felx items-center justify-center"
+                                            href="/detaildView/<%= data._id%>">
+                                            <button class="text-xs p-2 px-3">
+                                                View Product
+                                            </button>
+                                        </a>
+                                    </div>
+
+                                    <div class="flex flex-col md:flex-row items-center">
+                                        <div class="flex items-center">
+                                            <div class="flex items-center">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                                <img src="/assets/product/star.png" alt="">
+                                            </div>
+                                            <div class="value ms-2">(<%= index+10%>)</div>
+                                        </div>
+                                        <a class="md:hidden mt-4 w-full border-2 drop-shadow-sm hover:border-lightRed hover:bg-white bg-gradient-to-r from-lightRed to-red font-medium text-white hover:black  rounded-lg felx items-center justify-center"
+                                            href="/detaildView/<%= data._id%>">
+                                            <button class="text-xs p-2 px-3">
+                                                View Product
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <% }); %>
+                    </div>
+                </section>
+    </div>
+    </section>
+    </div>
+    <script src="/zoom/zoom.js"></script>
+    <script src="/zoom/zoomsl.min.js"></script>
+    <script src="/js/P_Image.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('CartForm');
+            const succMsg = document.getElementById('CartSuccMsg');
+            const cartItemCount = document.getElementById('cartItemCount');
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                $.ajax({
+                    type: 'post',
+                    url: '/cart/<%= data._id%>',
+                    success: function (res) {
+                        succMsg.textContent = "Product Successfully Added Your Cart"
+                        const currentCount = parseInt(cartItemCount.textContent) || 0;
+                        const newCount = currentCount + 1;
+                        cartItemCount.textContent = newCount;
+                    }
+                })
+
+            })
+        })
+    </script>
+    <script>
+        const form = document.getElementById('WhishList');
+        const whishlistSuccMsg = document.getElementById('CartSuccMsg');
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            $.ajax({
+                url: '/WhishList/<%= data._id%>',
+                type: 'post',
+                success: function (res) {
+                    if (res == "Already Existe") {
+                        whishlistSuccMsg.innerText = "Product Already Existe In The WhishList"
+                    } else {
+                        whishlistSuccMsg.innerText = "Product Successfully Added"
+                    }
+
+                }
+            })
+        })
+    </script>
+    <%- include("../partials/footer.ejs")%>

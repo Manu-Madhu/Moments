@@ -1,0 +1,20 @@
+<%- include('../partials/header.ejs')%>
+    <div class="container-fluid p-0 justify-content-center align-items-center signUp min-vh-100" style="margin-top: 6%;">
+        <%- include("../partials/navBar.ejs")%>
+            <div class="flex items-center justify-center p-4">
+                <div class="bg-white CardOTP p-3 py-5 md:w-[400px] mt-40">
+                    <div class="flex items-center justify-center m-3">
+                        <!-- <img src="/assets/nav/succ.png" alt="" class="img-fluid imgOTP"> -->
+                        <lottie-player src="https://assets1.lottiefiles.com/temp/lf20_MqU2rh.json"
+                            background="transparent" speed="1" style="width: 100px; height: 100px; cursor: pointer;" hover
+                            autoplay></lottie-player>
+                    </div>
+                    <span><%=locals.succ? succ:"" %></span>
+                    <div class="OTPtext mt-2">
+                        <a class="text-success text-decoration-none"href="/login">Click Here</a> 
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <%- include('../partials/footer.ejs')%>

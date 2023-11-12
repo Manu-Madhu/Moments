@@ -1,0 +1,117 @@
+<%- include('../partials/header.ejs')%>
+    <div class="container mx-auto px-2 min-vh-100 mt-[120px]">
+        <%- include('../partials/adminnav.ejs')%>
+            <div class="container mx-auto flex items-center justify-center">
+                <div class="flex flex-col md:flex-row w-full p-4 gap-3">
+                    <div class="md:w-1/4 bg-white d-flex pt-4 rounded-lg">
+                        <ul class="w-full flex flex-column items-center overflow-hidden p-2">
+                            <li class="dashOther fw-bold p-1 m-2 ps-4  flex w-full">
+                                <img src="/assets/admin/d9.png" alt="" class="object-cover me-2 ">
+                                <span><a class="text-decoration-none" style="color: #cdcdcd;"
+                                        href="/admin/Dashboard">DashBoard</a></span>
+                            </li>
+                            <li class="sideBarlist border p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d3.png" alt="" class="object-cover me-2 text-white">
+                                <span>
+                                    <a href="/admin/category" class="text-decoration-none">Category</a>
+                                </span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d2.png" alt="" class="object-cover me-2">
+                                <span>
+                                    <a href="/admin/productView" class="text-decoration-none"
+                                        style="color: #cdcdcd;">Product</a>
+                                </span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d4.png" alt="" class="object-cover me-2">
+                                <span>
+                                    <a href="/admin/coustomers" class="text-decoration-none"
+                                        style="color: #cdcdcd;">Customer</a>
+                                </span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d5.png" alt="" class="object-cover me-2">
+                                <span></span>
+                                <a href="/admin/order" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Order</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d6.png" alt="" class="object-cover me-2">
+                                <span></span>
+                                <a href="/admin/coupons" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Coupons</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d6.png" alt="" class="object-cover me-2">
+                                <span></span>
+                                <a href="/admin/logOut" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Logout</a></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="md:w-3/4">
+                        <div class="container p-0">
+                            <!-- OTHRT PART -->
+                            <div class=" container p-0 m-0">
+                                <div class="container p-0 bg-white p_addingWrapper">
+                                    <form action="/admin/updateCategory" method="post">
+                                        <div class="container p-3 ps-5">
+                                            <div class="row">
+                                                <div class="col-md-6 d-flex flex-column inputeWrapper">
+                                                    <span class="mb-2 fw-bold"
+                                                        style="color: #8e8e8e; font-size: 13px;">Category Name*</span>
+                                                    <span class="text-success fw-bold"><%= locals.Succ? Succ: ""%></span>
+                                                    <input class="p-2" type="text" name="categoryName" value="<%= CategoryData.categoryName %>" required>
+                                                </div>
+                                                <div class="col-md-6 d-flex flex-column inputeWrapper">
+                                                    <span class="mb-2 fw-bold"
+                                                        style="color: #8e8e8e; font-size: 13px;">Discount Percentage*</span>
+                                                    <span class="text-dark fw-bold"></span>
+                                                    <input class="p-2" type="text" name="offerValue" value="<%=CategoryData.offerValue%>"  required>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-3 d-flex" id="catogeryDisInput".>
+                                                <div class="col-md-6 d-flex flex-column">
+                                                    <div class=" d-flex flex-column inputeWrapper">
+                                                        <span class="mb-2 fw-bold"
+                                                            style="color: #8e8e8e; font-size: 13px;">Minimum value*</span>
+                                                        <span class="text-success fw-bold"></span>
+                                                        <input class="p-2" value="<%=CategoryData.minValue%>" type="text" name="minValue">
+                                                    </div>
+                                                    <div class="d-flex flex-column inputeWrapper">
+                                                        <span class="mb-2 fw-bold"
+                                                            style="color: #8e8e8e; font-size: 13px;">Maximum value*</span>
+                                                        <span class="text-dark fw-bold"></span>
+                                                        <input class="p-2" value="<%=CategoryData.maxValue%>" type="text" name="maxValue" >
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 categoryDis">
+                                                    <div class=" d-flex flex-column inputeWrapper" id="inputDis">
+                                                        <span class="mb-2 fw-bold" style="color: #8e8e8e; font-size: 13px;">Discription*</span>
+                                                        <input name="categoryDiscription" id="" cols="30" rows="10" value="<%= CategoryData.categoryDiscription %>"  class="textWrapper" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <input type="hidden" name="id" value ="<%= CategoryData._id %>">
+                                        </div>
+                                        <div class="container ms-4 pb-2 top">
+                                            <button class="bg-gradient-to-r from-lightRed to-red p-2 rounded text-white text-xs" type="submit">
+                                                Apply Changes
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/chart.js"></script>
+
+    <%- include('../partials/adminfooter.ejs')%>

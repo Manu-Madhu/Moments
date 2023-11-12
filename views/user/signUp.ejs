@@ -1,0 +1,54 @@
+<%- include("../partials/header.ejs")%>
+   <div class="container-fluid p-0 justify-content-center align-items-center signUp min-vh-100" style="margin-top: 6%;">
+      <%- include("../partials/navBar.ejs")%>
+         <div class="container d-flex justify-content-center align-items-center p-3 py-5">
+            <div class="flex flex-col md:flex-row rounded bg-white Card md:w-[70%] mb-10">
+               <div class="col-md-6 flex itesm-center m-0">
+                  <img src="/assets/nav/2.png" alt="" class="object-cover w-full">
+               </div>
+               <div class="left col-md-6 py-5 d-flex flex-column justify-content-center">
+                  <div class="w-full flex flex-col items-center justify-center">
+                     <h2 class="text-3xl font-bold text-gradient py-2">Create an account</h2>
+                     <div class="text-xs text text-danger mt-3">
+                        <%=locals.succ? succ:""%>
+                     </div>
+                  </div>
+                  <form action="/register" method="post" onsubmit="return allChecking()" class="px-3">
+                     <div class="signUpForm d-flex gap-3 mt-4 flex-column loginButton">
+                        <!-- NAME -->
+                        <input class="signInput" type="text" placeholder="Name" name="name" id="name"
+                           onchange="nameChecking()" required>
+                        <span id="Name" class="text text-danger"></span>
+                        <!-- PHONE -->
+                        <input class="signInput" type="text" placeholder="Phone" name="number" id="number"
+                           onchange="numberChecking()" required>
+                        <span id="Number" class="text text-danger"></span>
+                        <!-- EMAIL -->
+                        <input class="signInput" type="text" placeholder="email" name="email" id="email"
+                           onchange="emailChecking()" required>
+                        <span id="Email" class="text text-danger"></span>
+                        <!-- PASSWORD -->
+                        <div class="d-flex">
+                           <input class="signInput" type="password" placeholder="Password" name="password" id="password"
+                              onchange="passwordChecking()" required>
+                           <span class="password-toggle" onclick="togglePasswordVisibility('password')">
+                              <i class="far fa-eye"></i>
+                           </span>
+                        </div>
+                        <span id="Password" class="text text-danger"></span>
+                        <!-- CONFIRM PASSWORD -->
+                        <input class="signInput" type="password" placeholder="Confirm Password" name="confirmPassword"
+                           id="confirmPassword" onchange="confirmPasswordChecking()" required>
+                        <span id="ConfirmPassword" class="text text-danger"></span>
+                        <!-- BUTTON -->
+                        <button class="text-white mt-2 mb-4 p-2 px-5 rounded" type="submit" onclick="validateForm()">
+                           Create Account
+                        </button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+   </div>
+   <script src="/js/validation.js"></script>
+   <%- include("../partials/footer.ejs")%>

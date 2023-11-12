@@ -1,0 +1,114 @@
+<%- include('../partials/header.ejs')%>
+    <div class="container mx-auto px-2 min-vh-100 mt-[120px]">
+        <%- include('../partials/adminnav.ejs')%>
+            <div class="container mx-auto flex items-center justify-center">
+                <div class="flex flex-col md:flex-row w-full p-2 gap-3">
+                    <div class="md:w-1/4 bg-white d-flex pt-4 rounded-lg">
+                        <ul class="w-full flex flex-column items-center overflow-hidden p-2 ">
+                            <li class="dashOther fw-bold p-1 m-2 ps-4  flex w-full">
+                                <img src="/assets/admin/d9.png" alt="" class="object-cover me-2 ">
+                                <span><a class="text-decoration-none" style="color: #cdcdcd;"
+                                        href="/admin/Dashboard">DashBoard</a></span>
+                            </li>
+                            <li class="dashOther fw-bold  p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d3.png" alt="" class="object-cover me-2 ">
+                                <span>
+                                    <a href="/admin/category" class="text-decoration-none"
+                                        style="color: #cdcdcd;">Category</a>
+                                </span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d2.png" alt="" class="object-cover me-2">
+                                <span>
+                                    <a href="/admin/productView" class="text-decoration-none">Product</a>
+                                </span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d4.png" alt="" class="object-cover me-2">
+                                <span>
+                                    <a href="/admin/coustomers" class="text-decoration-none"
+                                        style="color: #cdcdcd;">Customer</a>
+                                </span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d5.png" alt="" class="object-cover me-2">
+                                <span></span>
+                                <a href="/admin/order" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Order</a></span>
+                            </li>
+                            <li class="sideBarlist border p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d6.png" alt="" class="object-cover me-2">
+                                <span></span>
+                                <a href="/admin/coupons" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Coupons</a></span>
+                            </li>
+                            <li class="dashOther fw-bold p-1 ps-4 m-2 flex w-full">
+                                <img src="/assets/admin/d6.png" alt="" class="object-cover me-2">
+                                <span></span>
+                                <a href="/admin/logOut" class="text-decoration-none"
+                                    style="color: #cdcdcd;">Logout</a></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="md:w-3/4">
+                        <div class="container p-0">
+                            <!-- OTHER PART -->
+                            <div class=" container p-0 m-0">
+                                <div class="container p-0 bg-white p_addingWrapper">
+                                    <form action="/admin/coupons/couponsAdding" method="post" id="formCoupon">
+                                        <div class="container p-3 ps-5 pb-5">
+                                            <h6 class="py-3 fw-bold" style="font-size: 20px">New Coupons</h6>
+                                            <div class="pb-3">
+                                                <span class="text-success "><%= locals.suMessage?suMessage:" " %></span>
+                                            <span class="text-danger "><%= locals.message?message:" " %></span>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 d-flex flex-column inputeWrapper">
+                                                    <span class="mb-2 fw-bold"
+                                                        style="color: #8e8e8e; font-size: 13px;">Coupon Name*</span>
+                                                    <span class="text-dark fw-bold"></span>
+                                                    <input class="p-2" type="text" name="couponName" id="couponName" required>
+                                                </div>
+                                                <div class="col-md-6 d-flex flex-column inputeWrapper">
+                                                    <span class="mb-2 fw-bold"
+                                                        style="color: #8e8e8e; font-size: 13px;">Amount*</span>
+                                                    <span class="text-dark fw-bold"></span>
+                                                    <input class="p-2" type="text" name="couponValue" id="couponValue" required>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4 d-flex flex-column inputeWrapper">
+                                                    <span class="mb-2 fw-bold"
+                                                        style="color: #8e8e8e; font-size: 13px;">Max Value*</span>
+                                                    <span class="text-dark fw-bold"></span>
+                                                    <input class="p-2" type="text" name="maxValue" id="maxValue" required>
+                                                </div>
+                                                <div class="col-md-4 d-flex flex-column inputeWrapper">
+                                                    <span class="mb-2 fw-bold"
+                                                        style="color: #8e8e8e; font-size: 13px;">Min Value*</span>
+                                                    <span class="text-dark fw-bold"></span>
+                                                    <input class="p-2" type="text" name="minValue" id="minValue" required>
+                                                </div>
+                                                <div class="col-md-4 d-flex flex-column inputeWrapper">
+                                                    <span class="mb-2 fw-bold"
+                                                        style="color: #8e8e8e; font-size: 13px;">Expiry Date*</span>
+                                                    <span class="text-dark fw-bold"></span>
+                                                    <input class="p-2" type="date" name="expiryDate" id="expiryDate"
+                                                        style="color: #8e8e8e;" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="container ms-4 pb-4 pb-2">
+                                            <button class="bg-gradient-to-r from-lightRed to-red p-2 rounded text-white" type="submit">
+                                                Submite
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <%- include('../partials/adminfooter.ejs')%>

@@ -1,0 +1,124 @@
+<%- include("../partials/header.ejs")%>
+    <nav class="fixed top-0 left-0 flex flex-col w-full z-50 bg-white">
+        <div class="w-full bg-gradient-to-r from-lightRed to-red rounded-b-[30px] lg:rounded-b-[50px]">
+            <h1 class="flex justify-center text-white text-[10px] md:text-[12px] p-1 md:my-1">
+                Flat 10% Discount For All Purchase
+            </h1>
+        </div>
+        <div class="container mx-auto w-full flex items-center justify-between py-3 md:px-10">
+            <a class="flex items-center justify-center gap-2" href="/">
+                <img src="/assets/nav/logo.png" alt="" class="object-cover w-7 md:w-12">
+                <h1 class="font-bold text-[15px] md:text-[24px] text-red">Moments</h1>
+            </a>
+            <div class="flex gap-5">
+                <ul class="hidden md:flex items-center justify-center gap-3">
+                    <li class="">
+                        <a class="hover:text-red font-semibold" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="">
+                        <a class="hover:text-red font-semibold" href="/Shop">Shop</a>
+                    </li>
+                    <%if(user){%>
+                        <li class="">
+                            <a class="hover:text-red font-semibold" href="/logout">logOut</a>
+                        </li>
+                        <%}else{%>
+                            <li class=""></li>
+                            <a class="hover:text-red font-semibold" href="/login">login</a>
+                            </li>
+                            <%}%>
+                </ul>
+                <div class="Nav_icon d-flex gap-2 md:gap-3 justify-content-cneter align-items-center">
+                    <div class="hidden md:flex" style="position: relative;">
+                        <input class="search p-3 bg-white border rounded shadow-sm" type="search"
+                            placeholder="What you looking for?" aria-label="Search" id="searchInput">
+                    </div>
+                    <% if(user) {%>
+                        <a href="/WhishList"
+                            class="border  hover:bg-[#ffdbd5] rounded-md  p-1 md:p-2  px-2 md:px-3 text-center"
+                            style="position: relative;">
+                            <i class=" fa-regular fa-heart hover:text-primary"></i>
+                        </a>
+                        <a href="/cart"
+                            class="border hover:bg-[#ffdbd5] rounded-md p-1 md:p-2  px-2 md:px-3 text-center"
+                            style="position: relative;">
+                            <i class="fa-solid fa-cart-shopping hover:text-primary"></i>
+                            <% if(locals.cartCount){%>
+                                <span id="cartItemCount"
+                                    class="badge badge-pill bg-danger d-flex justify-content-center align-items-center p-1"
+                                    style="border-radius: 50%; position: absolute; top: -5px; right: -10px; width: 18px; height: 18px;font-size: 9px;">
+                                    <%=locals.cartCount%>
+                                </span>
+                                <%}else{%>
+                                    <span id="cartItemCount"
+                                        class="badge badge-pill bg-danger d-flex justify-content-center align-items-center p-1"
+                                        style="border-radius: 50%; position: absolute; top: -5px; right: -10px; width: 18px; height: 18px;font-size: 9px;">
+                                        0
+                                    </span>
+                                    <%}%>
+                        </a>
+                        <%}else{%>
+                            <a href="/WhishList"
+                                class="border  hover:bg-[#ffdbd5] rounded-md  p-1 md:p-2 px-2 lg:px-3 text-center">
+                                <i class="fa-regular fa-heart hover:text-primary"></i></a>
+                            <a href="/cart"
+                                class="border hover:bg-[#ffdbd5] rounded-md p-1 px-2 md:p-2  md:px-3  text-center"><i
+                                    class="fa-solid fa-cart-shopping hover:text-primary"></i></a>
+                            <%}%>
+                                <div class="d-flex flex-column align-items-center ">
+                                    <% if(user) {%>
+                                        <div class="iconP">
+                                            <a href="/profile">
+                                                <img src="/assets/admin/propic.webp" alt="" class="bg-cover w-8 md:w-10">
+                                            </a>
+                                        </div>
+                                        <%}else{%>
+                                            <div class="iconP">
+                                                <a href="/profile">
+                                                    <i class="fa-regular fa-user text-dark hover:text-primary"></i>
+                                                </a>
+                                            </div>
+                                            <%}%>
+                                                <span class="text-xs text-danger text-semibold ">
+                                                    <%= locals.user?user:"" %>
+                                                </span>
+                                </div>
+                                </form>
+                </div>
+            </div>
+        </div>
+        <div>
+
+        </div>
+    </nav>
+
+
+    <!-- Search input -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchInput = document.getElementById('searchInput');
+            const placeholder = searchInput.placeholder;
+            searchInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    const searchQuery = searchInput.value;
+                    $.ajax({
+                        type: 'get',
+                        url: '/search',
+                        data: { q: searchQuery },
+                        success: (data) => {
+                            console.log(data)
+                            if (data.length > 0) {
+                                UIupdate(data)
+                            } else {
+                                searchInput.placeholder = "No Product Found";
+                            }
+                        },
+                        error: (error) => {
+                            console.log(`Error while performing search: ${error}`);
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>

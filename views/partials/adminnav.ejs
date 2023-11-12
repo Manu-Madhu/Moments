@@ -1,0 +1,22 @@
+<%- include("../partials/header.ejs")%>
+  <nav class="fixed top-0 left-0 flex flex-col w-full z-50 bg-white">
+    <div class="container mx-auto w-full flex items-center justify-between py-3 md:px-10">
+      <a class="flex items-center justify-center gap-2" href="/admin/Dashboard">
+        <img src="/assets/nav/logo.png" alt="" class="object-cover w-7 md:w-12">
+        <h1 class="font-bold text-[15px] md:text-[24px] text-red">Moments</h1>
+      </a>
+      <div class="" id="navbarSupportedContent">
+        <form class="flex ">
+          <!-- <input class="admin_search p-3" type="search" placeholder="What you looking for?" aria-label="Search"> -->
+          <div class="flex flex-col items-center justify-center">
+            <div class="iconPA">
+              <i class="fa-regular fa-user text-white"></i>
+            </div>
+            <span class="text-danger fw-bold">
+              <%= locals.admin? admin:""%>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </nav>
